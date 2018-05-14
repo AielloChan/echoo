@@ -1,38 +1,43 @@
 package main
 
 import (
-	"fmt"
+	"os"
+	"path/filepath"
 	"strconv"
 
+	"github.com/AielloChan/echoo/asset"
+	"github.com/AielloChan/echoo/config"
 	"github.com/AielloChan/echoo/modes"
-)
-
-//
-const (
-	// NAME app name
-	NAME = "EchoX"
-	// VERSION Current version
-	VERSION = "0.1"
-	// AUTHER aiello chan
-	AUTHER = "Aiello Chan <aiello.chan@gmail.com>"
-	// LICENCE GPL open source licence
-	LICENCE = "GPL"
-	// REPO github repository addr
-	REPO = ""
-)
-
-// 运行参数
-var (
-	host string
-	port int
-	mode string // echo|terminal|file|ws
-	file string
+	"github.com/Sirupsen/logrus"
 )
 
 // 主函数
 func main() {
-	fmt.Println("Echoo serving at " + "http://" + host + ":" + strconv.Itoa(port))
+	// releaseFiles()
 
-	modes.RunWithMode(mode, host, port, file)
+	logrus.Info("Echoo serving at " + "http://" + config.Host + ":" + strconv.Itoa(config.Port))
 
+	modes.RunWithMode(config.Mode, config.Host, config.Port, config.File)
+
+}
+
+// 释放资源文件
+func releaseFiles() {
+	// 释放文件
+	isSuccess := true
+	dirs := []string{"static", "view"} // 设置需要释放的目录
+
+	for _, dir := range dirs {
+		// 解压dir目录到当前目录
+		if err := asset.RestoreAssets("./", dir); err != nil {
+			isSuccess = false
+			logrus.Error("Extract asset failed", err)
+			break
+		}
+	}
+	if !isSuccess {
+		for _, dir := range dirs {
+			os.RemoveAll(filepath.Join("./", dir))
+		}
+	}
 }

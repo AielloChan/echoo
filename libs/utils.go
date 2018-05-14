@@ -4,26 +4,20 @@ import (
 	"fmt"
 	"io"
 	"io/ioutil"
-	"log"
 	"net/http"
 	"os"
 	"path"
 	"regexp"
 	"strings"
 	"time"
+
+	"github.com/Sirupsen/logrus"
 )
 
 var (
 	_timer        = make(map[string]int64)
 	_SplitPathReg = regexp.MustCompile(`https?://[^\/]+\/(?:([^\/]+)\/)*([^\?]*)`)
 )
-
-// ErrorHandler 处理错误
-func ErrorHandler(err error) {
-	if err != nil {
-		log.Fatal(err)
-	}
-}
 
 // GetFullURL 获得完整 url
 func GetFullURL(r *http.Request) string {
@@ -50,7 +44,7 @@ func ConcatMap(m1 []string, m2 []string) []string {
 // ReadAll 读取所有并转为 string 输出
 func ReadAll(r io.Reader) string {
 	content, err := ioutil.ReadAll(r)
-	ErrorHandler(err)
+	logrus.Debug("Read body data failed: ", err)
 	return string(content)
 }
 
@@ -86,11 +80,15 @@ func PrepareFile(filePath string) {
 	// check
 	if _, err := os.Stat(filePath); err != nil {
 		err := os.MkdirAll(path.Dir(filePath), 0711)
-		ErrorHandler(err)
+		if err != nil {
+			logrus.Fatal("Can't create dir for logging: ", err)
+		}
 	}
 
 	f, err := os.OpenFile(filePath, os.O_CREATE|os.O_APPEND, 0755)
-	ErrorHandler(err)
+	if err != nil {
+		logrus.Fatal("Can't write to log file: ", err)
+	}
 	defer f.Close()
 }
 

@@ -7,8 +7,7 @@
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css">
+  <link rel="stylesheet" href="/static/bootstrap.min.css">
   <style type="text/css">
     body {
       margin: 5px 20px;
@@ -175,7 +174,9 @@
 
       ws.onopen = function (evt) {
         console.log("Connection open ...");
-        ws.send(uuid);
+        ws.send(JSON.stringify({
+          "uuid": uuid
+        }));
       };
 
       ws.onmessage = function (evt) {

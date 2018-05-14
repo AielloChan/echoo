@@ -1,0 +1,3 @@
+#!/bin/bash
+
+go-bindata -o=asset/asset.go -pkg=asset static/... view/...

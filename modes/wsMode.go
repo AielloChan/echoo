@@ -1,13 +1,13 @@
 package modes
 
 import (
-	"encoding/json"
 	"html/template"
-	"log"
 	"net/http"
 	"strings"
 
+	"github.com/AielloChan/echoo/config"
 	"github.com/AielloChan/echoo/libs"
+	"github.com/Sirupsen/logrus"
 
 	uuid "github.com/satori/go.uuid"
 	"golang.org/x/net/websocket"
@@ -30,22 +30,23 @@ var (
 
 // EchoServer Echo the data received on the WebSocket.
 func wsHandler(ws *websocket.Conn) {
-	log.Println("New ws request")
-	var msg string
+	logrus.Info("New client connected")
+	msg := &config.SocketData{}
 	for {
-		err := websocket.Message.Receive(ws, &msg)
+		err := websocket.JSON.Receive(ws, &msg)
 		if err != nil {
-			log.Println("Client disconnected ", err)
+			logrus.Info("Client disconnected ", err)
 			break
 		}
-		if len(msg) != cUUIDLength {
+		// 从 ws 消息中获取目标 uuid
+		tarUUID := msg.UUID
+
+		if len(tarUUID) != cUUIDLength {
 			// 错误输入
-			log.Println("Wrong ws message")
-			websocket.Message.Send(ws, "Wrong ws message")
+			logrus.Error("Wrong ws message", msg)
+			websocket.JSON.Send(ws, map[string]string{"msg": msg.String()})
 			ws.Close()
 		}
-		// 从 ws 消息中获取目标 uuid
-		tarUUID := msg
 		// 判断该 uuid 是否已经存在
 		if wsConns, ok := connPool[tarUUID]; ok {
 			// 已经存在
@@ -105,18 +106,18 @@ func wsModeHandler(w http.ResponseWriter, r *http.Request) {
 		case cServerURLPostfix:
 			// 服务器访问
 			// 广播消息，不返回任何信息
+			logrus.Info("Brodcast [" + curUUID + "] websocket msg")
 			brodcastWS(curUUID, r)
-			log.Println("brodcast [" + curUUID + "] websocket msg")
 		case cClientURLPostfix:
 			// 客户端访问
 			// 返回 html 页面
-			log.Println(r.URL)
+			logrus.Info(r.URL)
 			showPage(curUUID, w, r)
 		default:
 			// 未知访问
 			// 重定向到客户端访问
 			tarURL := curHost + "/" + curUUID + "/" + cClientURLPostfix
-			log.Println("Redirect to ", tarURL)
+			logrus.Info("Redirect to ", tarURL)
 			redirect(tarURL, w)
 		}
 	}
@@ -127,29 +128,23 @@ func newUser(targetHost string, targetPostfix string) (
 	tarUUID string, redirectURL string) {
 	// 生成 uuid 并返回 uuid 和 跳转链接
 	curUUID, err := uuid.NewV4()
-	libs.ErrorHandler(err)
+	logrus.Error("Create uuid failed: ", err)
 	return curUUID.String(), targetHost + "/" + curUUID.String() + "/" + targetPostfix
 }
-
-// 检查当前 url 是否正确
-// 如果不正确则返回跳转目标
-// func redirectCheck(r *http.Request, curUUID string) (string, bool) {
-// 	curURL, _ := url.Parse(libs.GetFullURL(r))
-// 	if strings.Contains(curURL.Path, curUUID) {
-// 		return "", false
-// 	}
-// 	curURL.Path = curUUID + "/echo"
-// 	return curURL.String(), true
-// }
 
 // 负责显示页面
 func showPage(curUUID string, w http.ResponseWriter, r *http.Request) {
 	t, err := template.ParseFiles(wsTplFile.FilePath())
-	libs.ErrorHandler(err)
+	if err != nil {
+		logrus.Fatal("Parse template file "+wsTplFile.FilePath()+" err: ", err)
+	}
+
 	tarURL := libs.GetFullHost(r) + "/" + curUUID + "/" + cServerURLPostfix
 	err = t.Execute(w, makeData(r, map[string]interface{}{"apiURL": tarURL}))
-	libs.ErrorHandler(err)
-	log.Println(r.URL)
+	if err != nil {
+		logrus.Fatal("Execute template file "+wsTplFile.FilePath()+" err: ", err)
+	}
+	logrus.Info(r.URL)
 }
 
 // 负责在页面不正确时重定向
@@ -160,10 +155,6 @@ func redirect(tarURL string, w http.ResponseWriter) {
 
 func brodcastWS(tarUUID string, r *http.Request) {
 	data := makeData(r)
-	jsonObj, err := json.Marshal(data)
-	if err != nil {
-		log.Println("err :", err)
-	}
 	wsConns := connPool[tarUUID]
 	if wsConns == nil {
 		return
@@ -175,8 +166,9 @@ func brodcastWS(tarUUID string, r *http.Request) {
 	}
 	// 存在注册过的 ws 链接
 	for key := range connPool[tarUUID] {
-		if websocket.Message.Send(key, string(jsonObj)) != nil {
-			log.Println("发送出错...")
+		err := websocket.JSON.Send(key, data)
+		if err != nil {
+			logrus.Error("Wrong ws connect", err)
 			delete(connPool[tarUUID], key)
 		}
 	}
@@ -188,7 +180,7 @@ func cleanTimoutSession() {
 		if libs.IsTimeout(tmpUUID, cTimeout) {
 			for tmpWSConn := range Conns {
 				if err := tmpWSConn.Close(); err != nil {
-					log.Println("Close ws err: ", err)
+					logrus.Error("Close ws err: ", err)
 				}
 			}
 			delete(connPool, tmpUUID)

@@ -2,15 +2,14 @@ package modes
 
 import (
 	"html/template"
-	"log"
 	"net/http"
 	"net/url"
-	"os"
 	"strconv"
 	"strings"
 	"time"
 
 	"github.com/AielloChan/echoo/libs"
+	"github.com/Sirupsen/logrus"
 	"golang.org/x/net/websocket"
 )
 
@@ -51,8 +50,7 @@ func RunWithMode(mode string, host string, port int, file string) {
 		processQueue = append(processQueue, wsModeHandler)
 		openWS = true
 	default:
-		log.Println("Try run 'echoX -h'")
-		os.Exit(1)
+		logrus.Fatal("Try run 'echoX -h'")
 	}
 
 	startAPISer(hostURL, dispatcher, openWS)
@@ -72,15 +70,15 @@ func startAPISer(hostURL url.URL, h func(http.ResponseWriter, *http.Request), op
 	http.HandleFunc("/favicon.ico", func(w http.ResponseWriter, r *http.Request) {
 		http.ServeFile(w, r, "static/favicon.ico")
 	})
+	http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("static"))))
 	if openWS {
+		logrus.Debug("Start ws server")
 		http.Handle("/ws", websocket.Handler(wsHandler))
 	}
 	http.HandleFunc("/", h)
-	// http.Handle("/echo", websocket.Handler(EchoServer))
 	err := http.ListenAndServe(hostURL.Host, nil)
-	// log.Println(NAME + " are already running at " + curURL.String())
 	if err != nil {
-		log.Fatal("ListenAndServe: ", err)
+		logrus.Fatal("ListenAndServe: ", err)
 	}
 }
 
