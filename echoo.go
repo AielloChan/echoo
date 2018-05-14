@@ -13,7 +13,7 @@ import (
 
 // 主函数
 func main() {
-	// releaseFiles()
+	releaseFiles()
 
 	logrus.Info("Echoo serving at " + "http://" + config.Host + ":" + strconv.Itoa(config.Port))
 

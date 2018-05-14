@@ -1,6 +1,8 @@
 package config
 
-import "fmt"
+import (
+	"fmt"
+)
 
 const (
 	// NAME app name
@@ -65,7 +67,7 @@ const (
 )
 
 var (
-	// LogoChart logo 的图形
+	// LogoChart logo 的彩色图形
 	LogoChart = fmt.Sprintf("%c[%d;%d;%dm%s%c[0m", 0x1B, 1, 0, 33,
 		""+
 			"┌─┐┌─┐┬ ┬┌─┐┌─┐\n"+

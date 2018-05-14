@@ -13,3 +13,5 @@
 
 # For macOS
 .DS_Store
+
+dist

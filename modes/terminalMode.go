@@ -15,11 +15,13 @@ func terminalModeHandler(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		logrus.Fatal("Parse template file "+terminalTplFile.FilePath()+" err: ", err)
 	}
-
-	err = t.Execute(os.Stdout, makeData(r, map[string]interface{}{
+	data := map[string]interface{}{
 		"colorStart": fmt.Sprintf("%c[%d;%d;%dm", 0x1B, 1, 0, 32),
 		"colorEnd":   fmt.Sprintf("%c[0m", 0x1B),
-	}))
+	}
+
+	err = t.Execute(os.Stdout, makeData(r, data))
+
 	if err != nil {
 		logrus.Fatal("Excute template file "+terminalTplFile.FilePath()+" err: ", err)
 	}

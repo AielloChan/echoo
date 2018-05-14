@@ -64,15 +64,21 @@ INFO[0000] Echoo serving at http://0.0.0.0:8888
 
 有了这个功能，我们调试服务器又简单了不少😼
 
-## 构建
+**`./echoo -v` 或者 `./echo -h` 获得详细信息**
+
+## 源码构建
+
+*所有构建成功的可执行程序都存放在 **dist** 目录下*
 
 ```bash
 git clone https://github.com/AielloChan/echoo.git
 cd echoo
 # 下面这条命令是将静态资源打包
 ./package.sh
-go build *.go
+./build.sh
 ./echoo
 ```
+
+（windows 运行后会有一些奇怪的字符显示，这是因为颜色字符在非 TTY 终端下输出错误的问题，如果你有好的解决方案，请不惜赐教）
 
 Have Fun!
