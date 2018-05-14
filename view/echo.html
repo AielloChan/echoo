@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Echoo</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css">
+  <style type="text/css">
+    body {
+      margin: 5px 20px;
+    }
+
+    footer {
+      margin: 25px 0 0 0;
+      padding: 8px 0;
+      text-align: center;
+      border-top: 1px solid #ddd;
+      font-size: 12px;
+      color: #555;
+    }
+
+    .content {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="content">
+    <h1>Echoo</h1>
+
+    <pre>{{.method}} {{.url}} {{.protocol}}</pre>
+
+    <h2>Request</h2>
+
+    <div class="table-responsive">
+      <table class="table table-bordered">
+        <tr>
+          <td>Host</td>
+          <td>{{.host}}</td>
+        </tr>
+        <tr>
+          <td>Method</td>
+          <td>{{.method}}</td>
+        </tr>
+        <tr>
+          <td>Full URL</td>
+          <td>{{.fullUrl}}</td>
+        </tr>
+        <tr>
+          <td>Path</td>
+          <td>{{.url}}</td>
+        </tr>
+        <tr>
+          <td>Cookie</td>
+          <td>{{.cookie}}</td>
+        </tr>
+        <tr>
+          <td>ContentLength</td>
+          <td>{{.contentLength}}</td>
+        </tr>
+        <tr>
+          <td>Client IP</td>
+          <td>{{.remoteAddr}}</td>
+        </tr>
+      </table>
+    </div>
+
+    <h2>Headers</h2>
+    <div class="table-responsive">
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th>Key</th>
+            <th>Value</th>
+          </tr>
+        </thead>
+        {{range $key, $value := .header}}
+        <tr>
+          <td>{{$key}}</td>
+          <td>{{$value}}</td>
+        </tr>
+        {{end}}
+      </table>
+    </div>
+
+    <h2>URL Parameters</h2>
+    <div class="table-responsive">
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th>Key</th>
+            <th>Value</th>
+          </tr>
+        </thead>
+        <tbody>
+          {{range $key, $value := .urlParams}}
+          <tr>
+            <td>{{$key}}</td>
+            <td>{{$value}}</td>
+          </tr>
+          {{end}}
+        </tbody>
+      </table>
+    </div>
+
+    <h2>Body</h2>
+    {{if .body}} {{.body}} {{else}}
+    <em>(No request body)</em>
+    {{end}}
+
+    <footer>
+
+      Learn more about
+      <a href="" target="_blank">echoo – The most easy way to run HTTP request test.</a>
+    </footer>
+  </div>
+</body>
+
+</html>
