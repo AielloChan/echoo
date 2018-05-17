@@ -2,6 +2,8 @@
 
 一个用 Go 语言编写的 echo 服务器
 
+[下载地址](https://github.com/AielloChan/echoo/releases)
+
 ## 四大模式
 
 [echo 模式](#echo) [terminal 模式](#terminal) [file 模式](#file) [websocket 模式](#websocket)
