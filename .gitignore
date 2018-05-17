@@ -14,4 +14,5 @@
 # For macOS
 .DS_Store
 
-dist
+!dist/*.exe
+debug
