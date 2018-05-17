@@ -2,7 +2,7 @@
 
 一个用 Go 语言编写的 echo 服务器
 
-[下载地址](https://github.com/AielloChan/echoo/releases)
+[下载地址](https://github.com/AielloChan/echoo/tree/master/dist)
 
 ## 四大模式
 
