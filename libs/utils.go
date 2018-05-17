@@ -16,7 +16,7 @@ import (
 
 var (
 	_timer        = make(map[string]int64)
-	_SplitPathReg = regexp.MustCompile(`https?://[^\/]+\/(?:([^\/]+)\/)*([^\?]*)`)
+	_SplitPathReg = regexp.MustCompile(`https?://[^\/]+\/(?:([^\/\?]+)\/)*([^\?]*)`)
 )
 
 // GetFullURL 获得完整 url
