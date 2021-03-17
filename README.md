@@ -60,7 +60,7 @@ INFO[0000] Echoo serving at http://0.0.0.0:8888
 1. 先在浏览器中访问上面输出的地址，如（http://0.0.0.0:8888）
 2. 服务器会自动给你分配一个测试地址，并且将你刚才访问的页面重定向到分配给你的测试页面，如（http://0.0.0.0:8888/4bf26e4f-7324-4942-a21c-706575cdb34d/client）
 3. 在当前的浏览器页面上，你能看到你刚才请求这个页面的相关信息，同时，你能发现，页面上多了一个名为 **Target** 的板块，如下图：
-  ![ws_mode_target.png](./screenshot/ws_mode_target.png)
+  ![ws_mode_target.png](screenshot/ws_mode_target.png)
 4. 试着将该 url 设置为你服务器访问的目标地址（如 nginx 中的 proxy_pass 目标地址等，或者可以直接在另一个浏览器中访问该 **Target url**）
 5. 大功告成，每次访问 **Target url** 的请求信息，都会在第 2 步中打开的那个页面中显示，并且是**实时更新**
 
