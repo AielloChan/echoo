@@ -1,4 +1,4 @@
-<img src="screenshot/echoo.png" width="100px" alt="main"/>
+<p align="center"><img src="screenshot/echoo.png" width="100px" alt="main"/></p>
 
 # Echoo
 
