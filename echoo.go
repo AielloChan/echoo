@@ -16,7 +16,12 @@ import (
 func main() {
 	releaseFiles()
 
-	logrus.Info("Echoo serving at " + "http://" + config.Host + ":" + strconv.Itoa(config.Port))
+	port := strconv.Itoa(config.Port)
+	url := "http://" + config.Host + ":" + port
+	localUrl := "http://127.0.0.1:" + port
+
+	logrus.Info("Echoo is serving...")
+	logrus.Info("You can access at " + url + " or " + localUrl)
 
 	modes.RunWithMode(config.Mode, config.Host, config.Port, config.File)
 
