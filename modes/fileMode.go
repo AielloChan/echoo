@@ -7,7 +7,8 @@ import (
 
 	"github.com/AielloChan/echoo/config"
 	"github.com/AielloChan/echoo/libs"
-	"github.com/Sirupsen/logrus"
+
+	"github.com/sirupsen/logrus"
 )
 
 // fileModeHandler 输出为文件的模式

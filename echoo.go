@@ -8,7 +8,8 @@ import (
 	"github.com/AielloChan/echoo/asset"
 	"github.com/AielloChan/echoo/config"
 	"github.com/AielloChan/echoo/modes"
-	"github.com/Sirupsen/logrus"
+
+	"github.com/sirupsen/logrus"
 )
 
 // 主函数

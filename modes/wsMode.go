@@ -7,7 +7,8 @@ import (
 
 	"github.com/AielloChan/echoo/config"
 	"github.com/AielloChan/echoo/libs"
-	"github.com/Sirupsen/logrus"
+
+	"github.com/sirupsen/logrus"
 
 	uuid "github.com/satori/go.uuid"
 	"golang.org/x/net/websocket"
@@ -127,8 +128,7 @@ func wsModeHandler(w http.ResponseWriter, r *http.Request) {
 func newUser(targetHost string, targetPostfix string) (
 	tarUUID string, redirectURL string) {
 	// 生成 uuid 并返回 uuid 和 跳转链接
-	curUUID, err := uuid.NewV4()
-	logrus.Error("Create uuid failed: ", err)
+	curUUID := uuid.NewV4()
 	return curUUID.String(), targetHost + "/" + curUUID.String() + "/" + targetPostfix
 }
 

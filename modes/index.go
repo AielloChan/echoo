@@ -9,7 +9,8 @@ import (
 	"time"
 
 	"github.com/AielloChan/echoo/libs"
-	"github.com/Sirupsen/logrus"
+
+	"github.com/sirupsen/logrus"
 	"golang.org/x/net/websocket"
 )
 
@@ -50,7 +51,7 @@ func RunWithMode(mode string, host string, port int, file string) {
 		processQueue = append(processQueue, wsModeHandler)
 		openWS = true
 	default:
-		logrus.Fatal("Try run 'echoX -h'")
+		logrus.Fatal("Try run 'echoo -h'")
 	}
 
 	startAPISer(hostURL, dispatcher, openWS)
