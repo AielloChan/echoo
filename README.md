@@ -1,14 +1,22 @@
+<img src="screenshot/echoo.png" width="100px" alt="main"/>
+
 # Echoo
 
 一个用 Go 语言编写的 echo 服务器
 
-[下载地址](https://github.com/AielloChan/echoo/tree/master/dist)
+- [Echoo](#echoo)
+  - [四种工作模式](#四种工作模式)
+    - [echo](#echo)
+    - [terminal](#terminal)
+    - [file](#file)
+    - [websocket](#websocket)
+  - [Screenshot](#screenshot)
+  - [Download](#download)
+  - [源码构建](#源码构建)
 
-## 四大模式
+## 四种工作模式
 
-[echo 模式](#echo) [terminal 模式](#terminal) [file 模式](#file) [websocket 模式](#websocket)
-
-### 1. echo
+### echo
 
 ```bash
 > echoo -m echo
@@ -21,7 +29,7 @@ INFO[0000] You can access at http://0.0.0.0:8888 or http://127.0.0.1:8888
 
 试试改变 url 参数，并再次访问，它会将你每次的请求信息都以 html 形式返回到浏览器上。
 
-### 2. terminal
+### terminal
 
 ```bash
 > echoo -m terminal
@@ -31,7 +39,7 @@ INFO[0000] You can access at http://0.0.0.0:8888 or http://127.0.0.1:8888
 
 该模式会不是像 **echo** 模式那样输出在浏览器中，而是直接在命令行中输出访问 url 时的请求信息。
 
-### 3. file
+### file
 
 ```bash
 > echoo -m file
@@ -43,7 +51,7 @@ INFO[0000] You can access at http://0.0.0.0:8888 or http://127.0.0.1:8888
 从而在所有模式中使用此功能）。它默认将日志存放在 **logs/log.txt** 文件中，你也可以在后面
 以 `-f 自定义日志文件地址` 来自定义地址。
 
-### 4. websocket
+### websocket
 
 通过 websocket 技术，你可以将指定链接被访问时使用的请求信息，直接显示在另一个页面中，且是实时更新的
 
@@ -72,6 +80,10 @@ INFO[0000] You can access at http://0.0.0.0:8888 or http://127.0.0.1:8888
 ## Screenshot
 
 <img src="screenshot/main.png" width="50%" alt="main"/>
+
+## Download
+
+[下载地址](https://github.com/AielloChan/echoo/tree/master/dist)
 
 ## 源码构建
 
