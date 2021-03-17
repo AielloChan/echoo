@@ -4,9 +4,6 @@
 
 [下载地址](https://github.com/AielloChan/echoo/tree/master/dist)
 
-## Screenshot
-
-![main](screenshot/main.png)
 ## 四大模式
 
 [echo 模式](#echo) [terminal 模式](#terminal) [file 模式](#file) [websocket 模式](#websocket)
@@ -63,13 +60,18 @@ INFO[0000] You can access at http://0.0.0.0:8888 or http://127.0.0.1:8888
 1. 先在浏览器中访问上面输出的地址，如（http://127.0.0.1:8888）
 2. 服务器会自动给你分配一个测试地址，并且将你刚才访问的页面重定向到分配给你的测试页面，如（http://127.0.0.1:8888/4bf26e4f-7324-4942-a21c-706575cdb34d/client）
 3. 在当前的浏览器页面上，你能看到你刚才请求这个页面的相关信息，同时，你能发现，页面上多了一个名为 **Target** 的板块，如下图：
-  ![ws_mode_target.png](screenshot/ws_mode_target.png)
+  <img src="screenshot/ws_mode_target.png" width="50%" alt="ws mode"/>
 4. 试着将该 url 设置为你服务器访问的目标地址（如 nginx 中的 proxy_pass 目标地址等，或者可以直接在另一个浏览器中访问该 **Target url**）
 5. 大功告成，每次访问 **Target url** 的请求信息，都会在第 2 步中打开的那个页面中显示，并且是**实时更新**
 
 有了这个功能，我们调试服务器又简单了不少😼
 
 **`./echoo -v` 或者 `./echoo -h` 获得详细信息**
+
+
+## Screenshot
+
+<img src="screenshot/main.png" width="50%" alt="main"/>
 
 ## 源码构建
 
